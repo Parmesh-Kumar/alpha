@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   BrainCircuit,
   FlaskConical,
+  FolderGit2,
   FolderOpen,
   LayoutDashboard,
   LogOut,
@@ -22,6 +23,7 @@ const NAV = [
   { to: "/dashboard/models", label: "Model zoo", icon: BrainCircuit, end: false },
   { to: "/dashboard/studio", label: "Backtest studio", icon: SlidersHorizontal, end: false },
   { to: "/dashboard/experiments", label: "Saved runs", icon: FolderOpen, end: false },
+  { to: "/dashboard/qlib", label: "Qlib source", icon: FolderGit2, end: false },
 ];
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {

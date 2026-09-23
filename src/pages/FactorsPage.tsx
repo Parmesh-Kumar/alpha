@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Sparkline } from "@/components/charts";
 import { Badge, Button, Input, Panel, Skeleton } from "@/components/ui";
 import { FACTORS, FAMILIES, FACTOR_MAP } from "@/lib/factors";
+import { FACTOR_SOURCE_LINKS, qlibGithub } from "@/lib/qlib";
 import { factorMeanSeries } from "@/lib/useResearch";
 import { useFactorStats } from "@/lib/useFactorStats";
 import { bps, pct } from "@/lib/format";
@@ -64,9 +65,19 @@ export default function FactorsPage() {
         title={`${FACTORS.length} descriptors across ${FAMILIES.length} families`}
         description="Each factor is a pure function of an instrument's price history. Statistics below are computed live: cross-sectional IC against next-day returns, rank IC, IC IR, spread between the top and bottom quintile, and signal persistence."
         actions={
-          <Badge tone={progress === 100 ? "positive" : "warning"}>
-            {progress === 100 ? "Evaluated" : `Evaluating ${progress}%`}
-          </Badge>
+          <>
+            <a
+              href={qlibGithub(FACTOR_SOURCE_LINKS.alpha158Handler)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-8 items-center rounded-md border border-border px-3 text-xs text-foreground transition-colors hover:bg-elevated/60"
+            >
+              Alpha158 handler ↗
+            </a>
+            <Badge tone={progress === 100 ? "positive" : "warning"}>
+              {progress === 100 ? "Evaluated" : `Evaluating ${progress}%`}
+            </Badge>
+          </>
         }
       />
 
