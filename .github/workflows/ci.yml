@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Build
+        run: bun run build
+
+      # Deployment installs for production, which skips devDependencies. This
+      # step exists so a build-tooling regression cannot reach main again.
+      - name: Build with production dependencies only
+        run: |
+          rm -rf node_modules dist
+          bun install --production --frozen-lockfile
+          bun run build
+
+      - name: Assert the static bundle was emitted
+        run: |
+          test -f dist/index.html
+          test -n "$(ls -A dist/assets)"
