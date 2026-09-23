@@ -11,6 +11,7 @@ import FactorsPage from "@/pages/FactorsPage";
 import Landing from "@/pages/Landing";
 import ModelsPage from "@/pages/ModelsPage";
 import OverviewPage from "@/pages/OverviewPage";
+import QlibPage from "@/pages/QlibPage";
 import StudioPage from "@/pages/StudioPage";
 
 function Splash() {
@@ -77,6 +78,14 @@ function Routes_() {
         element={
           <Protected>
             <ExperimentsPage />
+          </Protected>
+        }
+      />
+      <Route
+        path="/dashboard/qlib"
+        element={
+          <Protected>
+            <QlibPage />
           </Protected>
         }
       />

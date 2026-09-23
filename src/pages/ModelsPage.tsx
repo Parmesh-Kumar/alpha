@@ -3,6 +3,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { BarChart, CHART, LineChart } from "@/components/charts";
 import { Badge, Panel } from "@/components/ui";
 import { MODELS, MODEL_FAMILIES, MODEL_MAP, type ModelEntry } from "@/lib/models";
+import { MODEL_RECIPES, qlibGithub, qlibGithubDir } from "@/lib/qlib";
 import { pct } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -190,6 +191,32 @@ export default function ModelsPage() {
               </div>
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground">{detail.description}</p>
+            {(() => {
+              const recipe = MODEL_RECIPES[detail.id];
+              if (!recipe) return null;
+              return (
+                <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+                  {recipe.module ? (
+                    <a
+                      href={qlibGithub(recipe.module)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-mono text-[11px] text-primary transition-colors hover:text-primary/80"
+                    >
+                      qlib/{recipe.module.replace(/^qlib\//, "")} ↗
+                    </a>
+                  ) : null}
+                  <a
+                    href={qlibGithubDir(recipe.benchmarkDir)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-mono text-[11px] text-primary transition-colors hover:text-primary/80"
+                  >
+                    {recipe.benchmarkDir.replace("examples/benchmarks", "benchmark recipe")} ↗
+                  </a>
+                </div>
+              );
+            })()}
             <div className="panel-elevated p-3.5">
               <div className="label">Configuration signature</div>
               <div className="num mt-1.5 text-xs text-foreground">{detail.signature}</div>

@@ -1,12 +1,33 @@
 # Alpha Foundry
 
-A quantitative research workbench in the browser, inspired by [Microsoft qlib](https://github.com/microsoft/qlib).
+A quantitative research workbench in the browser, built around the [Microsoft qlib](https://github.com/microsoft/qlib) research loop — with the complete qlib source tree vendored in this repository.
 
 Alpha Foundry reproduces the qlib research loop in a single-page application: a point-in-time
 universe and data layer, a library of Alpha158-style factors, a catalogue of reference model
 architectures, a cost-aware cross-sectional backtester, and an evaluation layer with the metrics a
 research committee actually asks for. Everything is computed locally — nothing is mocked, and the
 same parameters always produce the same result.
+
+## Vendored qlib source
+
+The full [microsoft/qlib](https://github.com/microsoft/qlib) checkout (MIT licensed,
+© Microsoft Corporation) is extracted in this repository at **`vendor/qlib`** — 618 files:
+the data layer with its expression-operator language, the contrib model zoo (35 modules), the
+event-driven backtest engine, the workflow/recorder layer, the RL order-execution framework,
+and 25+ runnable benchmark recipes under `vendor/qlib/examples/benchmarks`.
+
+The workbench is linked to it from the web UI:
+
+| Where | What it links to |
+| --- | --- |
+| `Qlib source` page (`/dashboard/qlib`) | A curated, searchable map of the vendored tree; every entry opens the file in this checkout (raw) and the matching page on upstream GitHub |
+| Factor library | Each page header links to the upstream `Alpha158` handler the factor catalogue follows |
+| Model zoo | Each model's detail panel links to its upstream implementation module and its benchmark recipe directory |
+
+qlib itself is a Python platform and is not executed by the web app; it is vendored as the
+reference implementation the workbench mirrors. The pipeline design, factor families and model
+catalogue follow its structure — all code under `src/` and `convex/` is an independent
+implementation.
 
 > **Synthetic data notice.** The bundled research universe is generated deterministically from a
 > seeded PRNG. It behaves like an equity market (regime shifts, fat tails, sector co-movement,
@@ -84,6 +105,7 @@ to `0.0.0.0` on the injected `PORT`.
 | `/dashboard/models` | protected | Sortable model leaderboard and reference growth paths |
 | `/dashboard/studio` | protected | Factor blend, portfolio construction, cost controls, full result set, save a run |
 | `/dashboard/experiments` | protected | Saved runs with their full configuration; reopen one in the studio |
+| `/dashboard/qlib` | protected | Searchable map of the vendored `vendor/qlib` tree with links into this checkout and upstream GitHub |
 
 Protected routes are wrapped in `RequireAuth`, which redirects to `/auth?returnTo=…` and returns the
 user to the page they asked for after sign-in.
@@ -103,5 +125,6 @@ with a 30-day expiry.
 ## Attribution
 
 The pipeline design, factor families and model catalogue follow the structure of Microsoft's
-[qlib](https://github.com/microsoft/qlib) platform. All code in this repository is an independent
+[qlib](https://github.com/microsoft/qlib) platform, whose source is vendored at `vendor/qlib`
+under the MIT license. All code in this repository outside `vendor/` is an independent
 implementation.
